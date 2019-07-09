@@ -26,12 +26,29 @@
         //get random vowels
         const randVowels = [];
         for (let i = 0; i < 4; i += 1) {
-          randVowels.push(alphabet.vowels[Math.floor(Math.random() * alphabet.vowels.length)]);
+          randVowels.push(randomLetter(alphabet.vowels));
         }
         //get random consonants
         const randCons = [];
         for (let i = 0; i < 5; i += 1) {
-          randCons.push(alphabet.regCons[Math.floor(Math.random() * alphabet.regCons.length)]);
+          let hardConInclude = Math.random();
+          console.log(hardConInclude);
+
+          //2.5 percent chance of a hard consonant (z,x,q,j) being included
+          if (hardConInclude < 0.025) {
+            randCons.push(randomLetter(alphabet.hardCons));
+            console.log('hardCon included');
+
+            //must include a 'u' if 'q' is included
+            if (randCons.includes('q')) {
+              randVowels.push('u');
+              randVowels.shift();
+            }
+            //start loop again
+            continue;
+          }
+          //if no hard consonant included, push a regular consonant
+          randCons.push(randomLetter(alphabet.regCons));
         }
         //concatenate random vowel and consonant arrays
         const randVowelsAndCons = randVowels.concat(randCons);
@@ -50,11 +67,16 @@
           function scrambleThis(array) {
             const scramble = [];
             for (let i = 0; i < 9; i += 1) {
-              let randChar = array[Math.floor(Math.random() * array.length)];
+              let randChar = randomLetter(array);
               scramble.push(randChar);
               array.splice(array.indexOf(randChar), 1);
             }
             return scramble;
+          }
+
+          //random letter function
+          function randomLetter(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
           }
 
 
