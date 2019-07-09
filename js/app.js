@@ -10,23 +10,53 @@ console.log(directory.length); //157068 words between 3-9 characters
 
       const alphabet = {
         vowels: ['a','e', 'i', 'o', 'u'],
-        regCons: ['b', 'c', 'd', 'f', 'g', 'h', 'l', 'm', 'n', 'p', 'r', 's', 't', 'v', 'w', 'y'],
-        hardCons: ['j', 'q', 'x', 'z', 'k']
+        regCons: ['b', 'c', 'd', 'f', 'g', 'h', 'k', 'l', 'm', 'n', 'p', 'r', 's', 't', 'v', 'w', 'y'],
+        hardCons: ['j', 'q', 'x', 'z'],
       }
+
+      
+      let scramble = [];
 
       //need ratio of 5:4 consonants:vowels
           //two loops - one array of 4 vowels, one of 5 consonants
             //vowel array conditions
               //if consonant array includes 'q', make vowels array include 'u'
-
+      
+      function makeScramble() {
+        //get random vowels
+        const randVowels = [];
+        for (let i = 0; i < 4; i += 1) {
+          randVowels.push(alphabet.vowels[Math.floor(Math.random() * alphabet.vowels.length)]);
+        }
+        //get random consonants
+        const randCons = [];
+        for (let i = 0; i < 5; i += 1) {
+          randCons.push(alphabet.regCons[Math.floor(Math.random() * alphabet.regCons.length)]);
+        }
+        //concatenate random vowel and consonant arrays
+        const randVowelsAndCons = randVowels.concat(randCons);
+        //randomize combo array and save to global scramble array
+        scramble = scrambleThis(randVowelsAndCons);
+        console.log(scramble);
+      }
             //consonant array conditions
               //don't include more than one j,q,x,z,k?
 
             //concatenate the two arrays which makes our SCRAMBLE array
         
-      //1b) rearrange button
+      //1b) rearrange button - use scramble function
 
           //scramble function
+          function scrambleThis(array) {
+            const scramble = [];
+            for (let i = 0; i < 9; i += 1) {
+              let randChar = array[Math.floor(Math.random() * array.length)];
+              scramble.push(randChar);
+              array.splice(array.indexOf(randChar), 1);
+              // console.log(randVowelsAndCons);
+            }
+            return scramble;
+          }
             //for loop, <= 9 times
 
               //make SCRAMBLECOPY of SCRAMBLE
@@ -93,7 +123,7 @@ console.log(directory.length); //157068 words between 3-9 characters
         //>> reset round total
 
       //>> make new SCRAMBLE
-      
+
       //reset round clock
 
 
