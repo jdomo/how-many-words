@@ -1,7 +1,27 @@
 // console.log(directory.length); //157068 words between 3-9 characters
 
-//GAME ELEMENTS - v1
+//GAME OBJECT
 
+const game = {
+  time: 120
+}
+
+//------------------------------
+
+//GLOBAL VARIABLES
+
+const submitBtn = document.querySelector('#submit-btn'); //global
+const wordInput = document.querySelector('#word-input'); //global
+
+submitBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  wordGuess = wordInput.value;
+  wordInput.value = '';
+  console.log(`word guessed is ${wordGuess}`);
+  checkWordGuess(wordGuess);
+});
+
+//GAME ELEMENTS - v1
 //1) string of random letters (9) (SCRAMBLE)
 
       //make 'alphabet' reference object (arrays in object?)
@@ -11,7 +31,7 @@
       const alphabet = {
         vowels: ['a','e', 'i', 'o', 'u'],
         //'n' not included in regCons - will be included automatically with presence of 'o' or 'a'
-        regCons: ['b', 'c', 'd', 'f', 'g', 'h', 'k', 'l', 'm', 'p', 'r', 's', 't', 'v', 'w', 'y'],
+        regCons: ['b', 'c', 'd', 'f', 'g', 'h', 'k', 'l', 'm', 'n', 'p', 'r', 's', 't', 'v', 'w', 'y'],
         hardCons: ['j', 'q', 'x', 'z'],
       }
 
@@ -48,9 +68,10 @@
         
         //get length of randCons at this stage for static reference in next loop
         const randConslength = randCons.length;
+        console.log(`${randCons}, randConsLength is ${randConslength}`);
 
         //fill remainder of randCons array
-        for (let i = 0; i <= (5 - (randConslength)); i += 1) {
+        for (let i = 0; i < (5 - (randConslength)); i += 1) {
           //variable to serve as probability for inclusion of certain letters
           let letterChance = Math.random();
 
@@ -64,8 +85,6 @@
               randVowels.push('u');
               randVowels.shift();
             }
-            //start loop again so that randCons.length isn't > 5
-            continue;
           }
 
           //20% chance of forced 'e' inclusion
@@ -76,17 +95,19 @@
           }
 
           //if no hard consonant included, push a regular consonant
-          randCons.push(randomLetter(alphabet.regCons));
-
+          
           //if 't' present, 50% chance of including an 'h' ('th' - common digraph)
           if (randCons.includes('t') && !randCons.includes('h') && letterChance < 0.5) {
             randCons.push('h');
             randCons.shift();
           }
+          randCons.push(randomLetter(alphabet.regCons));
+          console.log(`${randCons}, randCons length is ${randCons.length}`)
+          console.log(`${i}<--- i`)
         }
 
-        console.log(`${randVowels} <--- randVowels`)
-        console.log(`${randCons} <--- randCons`)        
+        console.log(`${randVowels} <--- randVowels`);
+        console.log(`${randCons} <--- randCons`);        
         //concatenate random vowel and consonant arrays
         const randVowelsAndCons = randVowels.concat(randCons);
         //randomize combo array and save to global scramble array
@@ -121,30 +142,33 @@
 //2) unordered list of words used in current round
     //create/append empty ul with id 'used-words'
 
-//3) round clock (2 minutes?)
+//3) round clock (2 minutes?) //game
 
     //this.timer = 120; (2 minutes)
     //setInterval to decrement timer every 1000ms
     //when clock finished, reset round
+    const timer = setInterval(() => {
+      
+    }, 1000)
 
 //4) user input box or form for word guesses
 
       //on submit, grab input and check four conditions
           //const WORD = inputEl.value
 
-      const wordsUsed = [];
-      let roundScore = 0;
-      const submitBtn = document.querySelector('#submit-btn');
-      const wordInput = document.querySelector('#word-input');
-      let wordGuess;
+      const wordsUsed = []; //player
+      let roundScore = 0;   //player
+      // const submitBtn = document.querySelector('#submit-btn'); //global
+      // const wordInput = document.querySelector('#word-input'); //global
+      let wordGuess; //player or game
 
-      submitBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        wordGuess = wordInput.value;
-        wordInput.value = '';
-        console.log(`word guessed is ${wordGuess}`);
-        checkWordGuess(wordGuess);
-      });
+      // submitBtn.addEventListener('click', (e) => {
+      //   e.preventDefault();
+      //   wordGuess = wordInput.value;
+      //   wordInput.value = '';
+      //   console.log(`word guessed is ${wordGuess}`);
+      //   checkWordGuess(wordGuess);
+      // });
 
       function checkWordGuess(word) {
         //1- is WORD.length >= 3?
