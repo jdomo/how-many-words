@@ -10,46 +10,82 @@
 
       const alphabet = {
         vowels: ['a','e', 'i', 'o', 'u'],
-        regCons: ['b', 'c', 'd', 'f', 'g', 'h', 'k', 'l', 'm', 'n', 'p', 'r', 's', 't', 'v', 'w', 'y'],
+        //'n' not included in regCons - will be included automatically with presence of 'o' or 'a'
+        regCons: ['b', 'c', 'd', 'f', 'g', 'h', 'k', 'l', 'm', 'p', 'r', 's', 't', 'v', 'w', 'y'],
         hardCons: ['j', 'q', 'x', 'z'],
       }
 
       
       let scramble = [];
+      
+      //CRAZY SCRAMBLE-MAKING FUNCTION
 
-      //need ratio of 5:4 consonants:vowels
-          //two loops - one array of 4 vowels, one of 5 consonants
-            //vowel array conditions
-              //if consonant array includes 'q', make vowels array include 'u'
+        //need ratio of 5:4 consonants:vowels
+            //two loops - one array of 4 vowels, one of 5 consonants
+
+        //letter array conditions - make longer words more probable
+          //digraph rules for 'en', 'an', 'th' (most common two-letter combos)
+            //if consonant array includes 'q', make vowels array include 'u'
+            //if vowel array includes 'e' or 'a', make consonant array include an 'n'
+            //if consonant array includes 't', 50% chance it also includes an 'h'
+
+          //2.5% chance of difficult consonant inclusion (q,z,x,j)
+            //if 'q' gets included, must also include 'u' (very few english words with only a 'q')
+
+          //if no 'e' in random vowels array, 70% chance of forced inclusion (approx. 70% of english words contain an 'e')
       
       function makeScramble() {
-        //get random vowels
         const randVowels = [];
+        const randCons = [];
+        let hardConIncluded = false;  
+        //get random vowels
         for (let i = 0; i < 4; i += 1) {
           randVowels.push(randomLetter(alphabet.vowels));
+          //include common digraphs if possible 'er', 'on', 'an'
+          if (randVowels.includes('e') && !randCons.includes('r')) randCons.push('r');
+          if ((randVowels.includes('o') || randVowels.includes('a')) && !randCons.includes('n')) randCons.push('n');
         }
-        //get random consonants
-        const randCons = [];
-        for (let i = 0; i < 5; i += 1) {
-          let hardConInclude = Math.random();
-          console.log(hardConInclude);
+        
+        console.log(`${randVowels} <--- randVowels`)
+        //get length of randCons at this stage for static reference in next loop
+        const randConslength = randCons.length;
 
-          //2.5 percent chance of a hard consonant (z,x,q,j) being included
-          if (hardConInclude < 0.025) {
+        //fill remainder of randCons array
+        for (let i = 0; i <= (5 - (randConslength)); i += 1) {
+          //variable to serve as probability for inclusion of certain letters
+          let letterChance = Math.random();
+
+          //2.5 percent chance of a difficult consonant (hardCons) (z,x,q,j) being included
+          if (letterChance < 0.025 && !hardConIncluded) {
             randCons.push(randomLetter(alphabet.hardCons));
             console.log('hardCon included');
-
+            hardConIncluded = true;
             //must include a 'u' if 'q' is included
             if (randCons.includes('q')) {
               randVowels.push('u');
               randVowels.shift();
             }
-            //start loop again
+            //start loop again so that randCons.length isn't > 5
             continue;
           }
+
+          //70% chance of forced 'e' inclusion
+          if (!randVowels.includes('e') && letterChance < 0.7) {
+            randVowels.push('e');
+            randVowels.shift();
+          }
+
           //if no hard consonant included, push a regular consonant
           randCons.push(randomLetter(alphabet.regCons));
+
+          //if 't' present, 50% chance of including an 'h' ('th' - common digraph)
+          if (randCons.includes('t') && !randCons.includes('h') && letterChance < 0.5) {
+            randCons.push('h');
+            randCons.shift();
+            console.log(`randCons length is ${randCons.length}`)
+          }
         }
+        console.log(`${randCons} <--- randCons`)        
         //concatenate random vowel and consonant arrays
         const randVowelsAndCons = randVowels.concat(randCons);
         //randomize combo array and save to global scramble array
@@ -65,13 +101,13 @@
 
           //scramble function
           function scrambleThis(array) {
-            const scramble = [];
+            const tempScramble = [];
             for (let i = 0; i < 9; i += 1) {
               let randChar = randomLetter(array);
-              scramble.push(randChar);
+              tempScramble.push(randChar);
               array.splice(array.indexOf(randChar), 1);
             }
-            return scramble;
+            return tempScramble;
           }
 
           //random letter function
