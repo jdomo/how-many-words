@@ -1,4 +1,4 @@
-console.log(directory.length); //157068 words between 3-9 characters
+// console.log(directory.length); //157068 words between 3-9 characters
 
 //GAME ELEMENTS - v1
 
@@ -53,25 +53,11 @@ console.log(directory.length); //157068 words between 3-9 characters
               let randChar = array[Math.floor(Math.random() * array.length)];
               scramble.push(randChar);
               array.splice(array.indexOf(randChar), 1);
-              // console.log(randVowelsAndCons);
             }
             return scramble;
           }
-            //for loop, <= 9 times
 
-              //make SCRAMBLECOPY of SCRAMBLE
-              //make NEWARRAY w/ 9 empty spots - new Array(9).fill('');
 
-              //get RANDOMINDX from 0-8 - Math.floor(Math.random() * 9);
-
-              //if NEWARRAY[RANDOMINDX] is not an empty string, place last character of SCRAMBLECOPY at first blank element in NEWARRAY
-
-              //if NEWARRAY[RANDOMINDX] === '', make it equal to SCRAMBLECOPY[SCRAMBLECOPY.length - 1]
-                  //pop off last character of SCRAMBLECOPY
-
-              //repeat til loop terminates
-
-              //set SCRAMBLE equal to NEWARRAY
               
 //2) unordered list of words used in current round
     //create/append empty ul with id 'used-words'
@@ -87,24 +73,72 @@ console.log(directory.length); //157068 words between 3-9 characters
       //on submit, grab input and check four conditions
           //const WORD = inputEl.value
 
-      //1- is WORD.length >= 3?
+      const wordsUsed = [];
+      let roundScore = 0;
+      const submitBtn = document.querySelector('#submit-btn');
+      const wordInput = document.querySelector('#word-input');
+      let wordGuess;
 
-      //2- is WORD already in 'words used'?
-          //if true, show 'word already used' in 'invis div'
+      submitBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        wordGuess = wordInput.value;
+        wordInput.value = '';
+        console.log(`word guessed is ${wordGuess}`);
+        checkWordGuess(wordGuess);
+      });
+
+      function checkWordGuess(word) {
+        //1- is WORD.length >= 3?
+        if (word.length < 3 || word.length > 9) {
+          console.log('invalid word length');
+          return false;
+        }
+        //2- is WORD already in 'words used'?
+        if (wordsUsed.includes(word)) {
+          console.log('word already used');
+          return false;
+        }
+        //3- are the letters used valid choices?
+        const scrambleCopy = [...scramble];
+        for (let i = 0; i < word.length; i += 1) {
+          if (!(scrambleCopy.includes(word[i]))) {
+            console.log('invalid letter choice: ${word[i]}');
+            return false;
+          } 
+          scrambleCopy.splice(scrambleCopy.indexOf(word[i]), 1);
+          console.log(`valid letter, letters left: ${scrambleCopy}`);
+        }
+        //4- is it a word / is it in the directory?
+        if (!(directory.includes(word))) {
+          console.log('word is not in dictionary');
+          return false;
+        }
+        wordsUsed.push(word);
+        appendWord(word);
+        roundScore += 1;
+        console.log(`success! words used: ${wordsUsed}, round score: ${roundScore}`);
+      }
+
+      function appendWord(word) {
+        const ul = document.querySelector('ul');
+        const li = document.createElement('li');
+        li.innerText = word;
+        ul.append(li);
+      }
+
+          //2 if true, show 'word already used' in 'invis div'
           //if false, proceed to next condition
 
-      //3- are the letters used valid choices?
-          //initialize TEMP with SCRAMBLE
+          //3 initialize TEMP with SCRAMBLE as value
           //loop through WORD, letter by letter (use WORD.length as iteration count)
             //if letter is included in scramble, splice out of TEMP
             //if not, show 'invalid letter choice' in 'invis div'
               //repeat WORD.length times - if no falsy return, proceed to next condition
 
-      //4- is it a word / is it in the directory?
-          //directory.includes(word)
+          //4 directory.includes(word)
           //if true, show 'success' in invisible div
-              //append word to 'words used'
-              //add a point to round total
+              //append word to 'words used' - use a function
+              //add a point to round score
                   //extra feature: points for word length? length score?
 
           //if false, show 'invalid word' in 'invis div'
