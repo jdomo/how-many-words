@@ -46,7 +46,6 @@
           if ((randVowels.includes('o') || randVowels.includes('a')) && !randCons.includes('n')) randCons.push('n');
         }
         
-        console.log(`${randVowels} <--- randVowels`)
         //get length of randCons at this stage for static reference in next loop
         const randConslength = randCons.length;
 
@@ -69,8 +68,8 @@
             continue;
           }
 
-          //70% chance of forced 'e' inclusion
-          if (!randVowels.includes('e') && letterChance < 0.7) {
+          //50% chance of forced 'e' inclusion
+          if (!randVowels.includes('e') && letterChance < 0.5) {
             randVowels.push('e');
             randVowels.shift();
           }
@@ -85,6 +84,8 @@
             console.log(`randCons length is ${randCons.length}`)
           }
         }
+
+        console.log(`${randVowels} <--- randVowels`)
         console.log(`${randCons} <--- randCons`)        
         //concatenate random vowel and consonant arrays
         const randVowelsAndCons = randVowels.concat(randCons);
