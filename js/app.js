@@ -32,7 +32,7 @@
           //2.5% chance of difficult consonant inclusion (q,z,x,j)
             //if 'q' gets included, must also include 'u' (very few english words with only a 'q')
 
-          //if no 'e' in random vowels array, 70% chance of forced inclusion (approx. 70% of english words contain an 'e')
+          //if no 'e' in random vowels array, 20% chance of forced inclusion (approx. 70% of english words contain an 'e' -- chance adjusted to reflect this)
       
       function makeScramble() {
         const randVowels = [];
@@ -56,7 +56,7 @@
 
           //2.5 percent chance of a difficult consonant (hardCons) (z,x,q,j) being included
           if (letterChance < 0.025 && !hardConIncluded) {
-            randCons.push(randomLetter(alphabet.hardCons));
+            randCons[1] = (randomLetter(alphabet.hardCons)); //inserted at second index so it doesn't get shifted or popped off
             console.log('hardCon included');
             hardConIncluded = true;
             //must include a 'u' if 'q' is included
@@ -68,10 +68,11 @@
             continue;
           }
 
-          //50% chance of forced 'e' inclusion
-          if (!randVowels.includes('e') && letterChance < 0.5) {
+          //20% chance of forced 'e' inclusion
+          if (!randVowels.includes('e') && letterChance < 0.2) {
             randVowels.push('e');
             randVowels.shift();
+            console.log(`forced an e in there`);
           }
 
           //if no hard consonant included, push a regular consonant
@@ -81,7 +82,6 @@
           if (randCons.includes('t') && !randCons.includes('h') && letterChance < 0.5) {
             randCons.push('h');
             randCons.shift();
-            console.log(`randCons length is ${randCons.length}`)
           }
         }
 
@@ -157,11 +157,11 @@
           console.log('word already used');
           return false;
         }
-        //3- are the letters used valid choices?
+        //3- are the letters used valid choices i.e. present in scramble?
         const scrambleCopy = [...scramble];
         for (let i = 0; i < word.length; i += 1) {
           if (!(scrambleCopy.includes(word[i]))) {
-            console.log('invalid letter choice: ${word[i]}');
+            console.log(`invalid letter choice: ${word[i]}`);
             return false;
           } 
           scrambleCopy.splice(scrambleCopy.indexOf(word[i]), 1);
