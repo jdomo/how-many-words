@@ -6,41 +6,42 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>How Many Words</title>
 
+  <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Domine|Roboto:400,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
   <div id="container">
-
-    <h1>How Many Words?</h1>
-
-    <div id="game-info">
+    <header class="center">
+      <h1>How Many Words?</h1>
+    </header>
+    <div class="center" id="game-info">
       <span id="round">Round: </span>
       <span id="round-score">Round Score: </span>
       <span id="total-score">Total Score: </span>
       <span id="hi-round-score">Most Words: </span>
     </div>
 
-    <button id="begin-btn">Begin</button>
-    <button class="hide" id="nextround-btn">Next Round</button>
-
-    <div id="timer-div">
-      <h3>
-        Timer: <span id="time-left"></span>
-      </h3>
+    <div class="center" id="versa-div">
+      <button class="pure-button pure-button-primary" id="begin-btn">Begin</button>
+      <button class="hide pure-button pure-button-primary" id="nextround-btn">Next Round</button>
     </div>
 
-    <div id="scramble-div">
-      <h3>Your Scramble:</h3>
+    <div class="center" id="timer-div">
+      <span id="time-left"></span>
+    </div>
+
+    <div class="center" id="scramble-div">
       <p id="scramble"></p>
-
-      <button id="rearrange-btn">Re-Arrange!</button>
+      <button class="pure-button pure-button-primary" id="rearrange-btn">Re-Arrange!</button>
     </div>
 
-    <form>
-      <h3>Type word guesses here:</h3>
-      <input type="text" id="word-input" autocomplete="off">
-      <input type="submit" id="submit-btn">
-    </form>
+    <div class="center" id="form-div">
+      <form class="center">
+        <input type="text" id="word-input" autocomplete="off">
+        <input type="submit" value="Guess" id="submit-btn">
+      </form>
+    </div>
 
     <div id="wordlist">
       <h3>Words this round: <span id="curr-word-count"></span></h3>

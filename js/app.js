@@ -3,8 +3,8 @@ const beginBtn = document.querySelector('#begin-btn');
 const nextRoundBtn = document.querySelector('#nextround-btn');
 const reArrangeBtn = document.querySelector('#rearrange-btn');
 const submitBtn = document.querySelector('#submit-btn'); 
+const versaDiv = document.querySelector('#versa-div');
 const wordInput = document.querySelector('#word-input');
-const wordInputHeader = document.querySelector('form h3');
 const round = document.querySelector('#round'); 
 const roundScore = document.querySelector('#round-score');
 const totalScore = document.querySelector('#total-score');
@@ -32,10 +32,14 @@ submitBtn.addEventListener('click', (e) => {
 });
 
 reArrangeBtn.addEventListener('click', () => {
-  wordInput.value = '';
-  const rearranged = game.scrambleThis(game.scramble);
-  game.scramble = rearranged;
-  yourScramble.innerText = game.stringify(game.scramble);
+  if (game.scramble.length) {
+    wordInput.value = '';
+    const rearranged = game.scrambleThis(game.scramble);
+    game.scramble = rearranged;
+    yourScramble.innerText = game.stringify(game.scramble);
+  } else {
+    console.log('nope')
+  }
 })
 
 nextRoundBtn.addEventListener('click', () => {
@@ -44,7 +48,6 @@ nextRoundBtn.addEventListener('click', () => {
     nextRoundBtn.classList.add('hide');
     submitBtn.classList.remove('invisible');
     wordInput.classList.remove('invisible');
-    wordInputHeader.classList.remove('invisible');  
   }
 });
 
@@ -114,7 +117,6 @@ const game = {
 
   emptyWordsUsed() {
     while (document.querySelector('#words-used li')) {
-      console.log('emptyWordsUsedWorks');
       let liToRemove = document.querySelector('#words-used li');
       liToRemove.remove();
     }
@@ -131,10 +133,7 @@ const game = {
         this.checkHiRoundScore();
         submitBtn.classList.add('invisible');
         wordInput.classList.add('invisible');
-        wordInputHeader.classList.add('invisible');
         nextRoundBtn.classList.remove('hide');
-        //display next round button
-        //attach event listener to activate nextRound();
       }
     }, 1000)
   },
@@ -252,96 +251,3 @@ const game = {
     this.setTimer();
   },
 }
-
-//------------------------------
-
-//GAME ELEMENTS - v1
-//1) string of random letters (9) (SCRAMBLE)
-
-      //make 'alphabet' reference object (arrays in object?)
-          //consonants: bcdfghlmnprstvwy / jqxzk (21)
-          //vowels: aeiou (5)
-
-      // const alphabet = {
-      //   vowels: ['a','e', 'i', 'o', 'u'],
-      //   //'n' not included in regCons - will be included automatically with presence of 'o' or 'a'
-      //   regCons: ['b', 'c', 'd', 'f', 'g', 'h', 'k', 'l', 'm', 'n', 'p', 'r', 's', 't', 'v', 'w', 'y'],
-      //   hardCons: ['j', 'q', 'x', 'z'],
-      // }
-
-      
-      // let scramble = [];
-      
-      //CRAZY SCRAMBLE-MAKING FUNCTION
-
-        //need ratio of 5:4 consonants:vowels
-            //two loops - one array of 4 vowels, one of 5 consonants
-
-        //letter array conditions - make longer words more probable
-          //digraph rules for 'en', 'an', 'th' (most common two-letter combos)
-            //if consonant array includes 'q', make vowels array include 'u'
-            //if vowel array includes 'e' or 'a', make consonant array include an 'n'
-            //if consonant array includes 't', 50% chance it also includes an 'h'
-
-          //2.5% chance of difficult consonant inclusion (q,z,x,j)
-            //if 'q' gets included, must also include 'u' (very few english words with only a 'q')
-
-          //if no 'e' in random vowels array, 20% chance of forced inclusion (approx. 70% of english words contain an 'e' -- chance adjusted to reflect this)
-        
-      //1b) rearrange button - use scramble function
-              
-//2) unordered list of words used in current round
-    //create/append empty ul with id 'used-words'
-
-//3) round clock (2 minutes?) //game
-
-    //this.timer = 120; (2 minutes)
-    //setInterval to decrement timer every 1000ms
-    //when clock finished, reset round
-
-//4) user input box or form for word guesses
-
-      //on submit, grab input and check four conditions
-          //const WORD = inputEl.value
-
-          //2 if true, show 'word already used' in 'invis div'
-          //if false, proceed to next condition
-
-          //3 initialize TEMP with SCRAMBLE as value
-          //loop through WORD, letter by letter (use WORD.length as iteration count)
-            //if letter is included in scramble, splice out of TEMP
-            //if not, show 'invalid letter choice' in 'invis div'
-              //repeat WORD.length times - if no falsy return, proceed to next condition
-
-          //4 directory.includes(word)
-          //if true, show 'success' in invisible div
-              //append word to 'words used' - use a function
-              //add a point to round score
-                  //extra feature: points for word length? length score?
-
-          //if false, show 'invalid word' in 'invis div'
-
-//5) invisible div with user feedback
-      //>> 'not a word'/'success'
-      //>> 'don't repeat letters/invalid character used'
-
-//6) round total
-
-//7) game total
-
-//8) round reset logic
-
-      //>> add round total to game total
-        //>> reset round total
-
-      //>> make new SCRAMBLE
-
-      //reset round clock
-
-
-//write functions outside of game object
-//call inside game object
-
-//score, etc. inside game object
-
-//what needs to reset every round?
