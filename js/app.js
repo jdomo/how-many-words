@@ -9,6 +9,7 @@ const roundScore = document.querySelector('#round-score');
 const totalScore = document.querySelector('#total-score');
 const hiRoundScore = document.querySelector('#hi-round-score');
 const currWordCount = document.querySelector('#curr-word-count');
+const wordsUsed = document.querySelector('#words-used');
 const yourScramble = document.querySelector('#scramble');
 const timeLeft = document.querySelector('#time-left');
 
@@ -105,6 +106,14 @@ const game = {
     const li = document.createElement('li');
     li.innerText = word;
     ul.append(li);
+  },
+
+  emptyWordsUsed() {
+    while (document.querySelector('#words-used li')) {
+      console.log('emptyWordsUsedWorks');
+      let liToRemove = document.querySelector('#words-used li');
+      liToRemove.remove();
+    }
   },
 
   //MAIN GAME FUNCTIONS
@@ -232,6 +241,7 @@ const game = {
     currWordCount.innerText = this.roundScore;
     yourScramble.innerText = game.stringify(this.scramble);
     this.scrambleDisplay = [...this.scramble];
+    this.emptyWordsUsed();
     this.setTimer();
   },
 }
