@@ -26,7 +26,7 @@ beginBtn.addEventListener('click', () => {
 submitBtn.addEventListener('click', (e) => {
   e.preventDefault();
   yourScramble.innerText = game.stringify(game.scramble);
-  game.wordGuess = wordInput.value;
+  game.wordGuess = wordInput.value.toLowerCase();
   wordInput.value = '';
   game.checkWordGuess(game.wordGuess);
 });
