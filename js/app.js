@@ -1,9 +1,10 @@
 //ELEMENT SELECTION (GLOBAL)
 const beginBtn = document.querySelector('#begin-btn');  
-const submitBtn = document.querySelector('#submit-btn'); 
-const reArrangeBtn = document.querySelector('#rearrange-btn');
 const nextRoundBtn = document.querySelector('#nextround-btn');
+const reArrangeBtn = document.querySelector('#rearrange-btn');
+const submitBtn = document.querySelector('#submit-btn'); 
 const wordInput = document.querySelector('#word-input');
+const wordInputHeader = document.querySelector('form h3');
 const round = document.querySelector('#round'); 
 const roundScore = document.querySelector('#round-score');
 const totalScore = document.querySelector('#total-score');
@@ -40,7 +41,10 @@ reArrangeBtn.addEventListener('click', () => {
 nextRoundBtn.addEventListener('click', () => {
   if (game.time === 0) {
     game.nextRound();
-    nextRoundBtn.classList.add('hide');  
+    nextRoundBtn.classList.add('hide');
+    submitBtn.classList.remove('invisible');
+    wordInput.classList.remove('invisible');
+    wordInputHeader.classList.remove('invisible');  
   }
 });
 
@@ -125,6 +129,9 @@ const game = {
       if (this.time === 0) {
         clearInterval(timer);
         this.checkHiRoundScore();
+        submitBtn.classList.add('invisible');
+        wordInput.classList.add('invisible');
+        wordInputHeader.classList.add('invisible');
         nextRoundBtn.classList.remove('hide');
         //display next round button
         //attach event listener to activate nextRound();
