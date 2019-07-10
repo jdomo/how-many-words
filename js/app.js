@@ -13,6 +13,7 @@ const currWordCount = document.querySelector('#curr-word-count');
 const wordsUsed = document.querySelector('#words-used');
 const yourScramble = document.querySelector('#scramble');
 const timeLeft = document.querySelector('#time-left');
+const msgPara = document.querySelector('#msg');
 
 //EVENT LISTENERS (GLOBAL)
 beginBtn.addEventListener('click', () => {
@@ -27,7 +28,6 @@ submitBtn.addEventListener('click', (e) => {
   yourScramble.innerText = game.stringify(game.scramble);
   game.wordGuess = wordInput.value;
   wordInput.value = '';
-  console.log(`word guessed is ${game.wordGuess}`);
   game.checkWordGuess(game.wordGuess);
 });
 
@@ -37,8 +37,6 @@ reArrangeBtn.addEventListener('click', () => {
     const rearranged = game.scrambleThis(game.scramble);
     game.scramble = rearranged;
     yourScramble.innerText = game.stringify(game.scramble);
-  } else {
-    console.log('nope')
   }
 })
 
@@ -122,10 +120,26 @@ const game = {
     }
   },
 
+  tradeClass(el, activeClass, timeOut = 0, desiredClass = activeClass) {
+    el.classList.remove(activeClass);
+    setTimeout(() => el.classList.add(desiredClass), timeOut);
+  },
+
+  displayMsg(text) {
+    if (text === 'nice!') {
+      this.tradeClass(msgPara, "red", '', "green");
+      this.tradeClass(msgPara, "green", 1500, "red");
+    }
+    msgPara.innerText = text;
+    this.tradeClass(msgPara, "no-opacity", 1200);
+  },
+
   //MAIN GAME FUNCTIONS
   setTimer() {
     this.time = 120;
+    timeLeft.style.color = "#14ad1c";
     const timer = setInterval(() => {
+      if (this.time <= 30) timeLeft.style.color = "#FF0000";
       this.time -= 1;
       timeLeft.innerText = this.time;
       if (this.time === 0) {
@@ -196,27 +210,26 @@ const game = {
   checkWordGuess(word) {
     //1- is WORD.length >= 3?
     if (word.length < 3 || word.length > 9) {
-      console.log('invalid word length');
+      if (word.length < 3) this.displayMsg('use at least 3 characters');
       return false;
     }
     //2- is WORD already in 'words used'?
     if (this.wordsUsed.includes(word)) {
-      console.log('word already used');
+      this.displayMsg('word already used');
       return false;
     }
     //3- are the letters used valid choices i.e. present in scramble?
     this.scrambleCopy = [...this.scramble];
     for (let i = 0; i < word.length; i += 1) {
       if (!(this.scrambleCopy.includes(word[i]))) {
-        console.log(`invalid letter choice: ${word[i]}`);
+        this.displayMsg(`invalid letter choice(s)`);
         return false;
       } 
       this.scrambleCopy.splice(this.scrambleCopy.indexOf(word[i]), 1);
-      console.log(`valid letter, letters left: ${this.scrambleCopy}`);
     }
     //4- is it a word / is it in the directory?
     if (!(directory.includes(word))) {
-      console.log('word is not in dictionary');
+      this.displayMsg('word is not in dictionary');
       return false;
     }
     this.wordsUsed.push(word);
@@ -224,7 +237,7 @@ const game = {
     this.roundScore += 1;
     roundScore.innerText = `Round Score: ${this.roundScore}`;
     currWordCount.innerText = this.roundScore;
-    console.log(`success! words used: ${this.wordsUsed}, round score: ${this.roundScore}`);
+    this.displayMsg('nice!');
   },
 
   checkHiRoundScore() {

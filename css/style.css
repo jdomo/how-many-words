@@ -1,10 +1,10 @@
-* {
-  transition: visibility 0.5s, linear;
+/* {
+  transition: all 0.5s, linear;
   /* -webkit-transition: all 1s ease;
   -moz-transition:    all 1s ease;
   -ms-transition:     all 1s ease;
-  -o-transition:      all 1s ease; */
-}
+  -o-transition:      all 1s ease; 
+} */
 
 body {
   font-family: "Roboto", sans-serif;
@@ -16,15 +16,25 @@ h1 {
 
 p {
   font-size: 30px;
+  padding: 0;
 }
 
 form {
-  margin-top: 20px;
+  /* margin-top: 20px; */
+}
+
+input {
+  border-radius: 5px;
 }
 
 span {
   display: inline-block;
   padding: 0 10px 10px 0;
+  text-align: center;
+}
+
+.pure-button {
+  border-radius: 5px;
 }
 
 .center {
@@ -40,6 +50,18 @@ span {
   visibility: hidden;
 }
 
+.no-opacity {
+  opacity: 0;
+}
+
+.green {
+  color: #14ad1c;
+}
+
+.red {
+  color: #ED4C4C;
+}
+
 #container {
   width: 80%;
   margin: auto;
@@ -48,6 +70,10 @@ span {
 #timer-div {
   height: 60px;
   /* padding-bottom: 15px; */
+}
+
+#time-left {
+  transition: opacity 0.2s linear;
 }
 
 #scramble {
@@ -60,7 +86,7 @@ span {
 
 #time-left {
   display: inline-block;
-  width: 75px;
+  width: 150px;
   font-size: 50px;
   font-weight: 700;
   color: #14ad1c;
@@ -69,13 +95,28 @@ span {
   margin-bottom: 15px;
 }
 
-#form-div {
-  margin-top: 60px;
-}
-
 #versa-div {
   display: block;
   height: 35px;
+}
+
+#msg-div {
+  height: 48px;
+  padding: 6px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#msg {
+  transition: opacity 0.2s linear;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+#msg-div p {
+  padding: 0;
+  margin: 0;
 }
 
 #rearrange-btn {
