@@ -56,13 +56,12 @@ wordInput.addEventListener('input', () => {
   })
 });
 
-
 //GAME OBJECT
 const game = {
   time: 120,
   round: 0,
   roundScore: 0,
-  totalSco1re: 0,
+  totalScore: 0,
   hiRoundScore: 0,
   
   scramble: [],
