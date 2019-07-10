@@ -2,7 +2,10 @@
 
 const beginBtn = document.querySelector('#begin-btn');  
 const submitBtn = document.querySelector('#submit-btn'); 
-const wordInput = document.querySelector('#word-input'); 
+const reArrangeBtn = document.querySelector('#rearrange-btn');
+const nextRoundBtn = document.querySelector('#nextround-btn');
+const wordInput = document.querySelector('#word-input');
+const round = document.querySelector('#round'); 
 const roundScore = document.querySelector('#round-score');
 const totalScore = document.querySelector('#total-score');
 const yourScramble = document.querySelector('#scramble');
@@ -12,23 +15,50 @@ const timeLeft = document.querySelector('#time-left');
 
 beginBtn.addEventListener('click', () => {
   if (game.time === 120) {
-    game.setTimer();
-    game.makeScramble();
-    yourScramble.innerText = game.scramble;
+    game.nextRound();
+    beginBtn.classList.add('button-hide');
   }
 })
 
 submitBtn.addEventListener('click', (e) => {
   e.preventDefault();
+  yourScramble.innerText = game.stringify(game.scramble);
   game.wordGuess = wordInput.value;
   wordInput.value = '';
   console.log(`word guessed is ${game.wordGuess}`);
   game.checkWordGuess(game.wordGuess);
 });
 
+reArrangeBtn.addEventListener('click', () => {
+  wordInput.value = '';
+  const rearranged = game.scrambleThis(game.scramble);
+  game.scramble = rearranged;
+  yourScramble.innerText = game.stringify(game.scramble);
+})
+
+nextRoundBtn.addEventListener('click', () => {
+  if (game.time === 0) game.nextRound();
+  nextRoundBtn.classList.add('button-hide');  
+});
+
+//LIVE UPDATE - SCRAMBLE DISPLAY
+wordInput.addEventListener('input', () => {
+  yourScramble.innerText = game.stringify(game.scramble);
+  game.scrambleDisplay = [...game.scramble];
+  const inputArray = wordInput.value.split('');
+  inputArray.forEach(item => {
+    if (game.scrambleDisplay.includes(item)) {
+      game.scrambleDisplay.splice(game.scrambleDisplay.indexOf(item), 1);
+      yourScramble.innerText = game.stringify(game.scrambleDisplay);
+    }
+  })
+});
+
+
 //GAME OBJECT
 const game = {
   time: 120,
+  round: 0,
   roundScore: 0,
   totalScore: 0,
 
@@ -38,25 +68,13 @@ const game = {
     hardCons: ['j', 'q', 'x', 'z'],
   },
   scramble: [],
+  scrambleCopy: [],
+  scrambleDisplay: [],
 
   wordGuess: null,
   wordsUsed: [],
 
-  setTimer() {
-    const timer = setInterval(() => {
-      this.time -= 1;
-      timeLeft.innerText = this.time;
-      if (this.time === 0) {
-        clearInterval(timer);
-        this.time = 120;
-        this.round += 1;
-        this.totalScore += this.roundScore;
-        this.roundScore = 0;
-        this.scramble = [];
-      }
-    }, 1000)
-  },
-
+//>>>>>>>>finish nextRound
   //HELPER FUNCTIONS ----
 
   scrambleThis(array) {
@@ -73,6 +91,14 @@ const game = {
     return arr[Math.floor(Math.random() * arr.length)];
   },
 
+  stringify(arr) {
+    let str = '';
+    arr.forEach(item => {
+      str += `${item} `;
+    });
+    return str.toUpperCase();
+  },
+
   appendWord(word) {
     const ul = document.querySelector('ul');
     const li = document.createElement('li');
@@ -80,8 +106,22 @@ const game = {
     ul.append(li);
   },
 
-  //END OF HELPER FUNCTIONS ----
+  //MAIN GAME FUNCTIONS ----
 
+  setTimer() {
+    this.time = 120;
+    const timer = setInterval(() => {
+      this.time -= 1;
+      timeLeft.innerText = this.time;
+      if (this.time === 0) {
+        clearInterval(timer);
+        nextRoundBtn.classList.remove('button-hide');
+        //display next round button
+        //attach event listener to activate nextRound();
+      }
+    }, 1000)
+  },
+  
   makeScramble() {
     const randVowels = [];
     const randCons = [];
@@ -104,7 +144,7 @@ const game = {
 
       //2.5 percent chance of a difficult consonant (hardCons) (z,x,q,j) being included
       if (letterChance < 0.025 && !hardConIncluded) {
-        randCons[1] = (randomLetter(this.alphabet.hardCons)); //inserted at second index so it doesn't get shifted or popped off
+        randCons[1] = (this.randomLetter(this.alphabet.hardCons)); //inserted at second index so it doesn't get shifted or popped off
         hardConIncluded = true;
         //must include a 'u' if 'q' is included
         if (randCons.includes('q')) {
@@ -131,8 +171,8 @@ const game = {
 
     //concatenate random vowel and consonant arrays
     const randVowelsAndCons = randVowels.concat(randCons);
-    //randomize combo array and save to global scramble array
-    this.scramble = this.scrambleThis(randVowelsAndCons);
+    //randomize combo array and assign to game's scramble property
+    return this.scrambleThis(randVowelsAndCons);
   },
 
   checkWordGuess(word) {
@@ -147,14 +187,14 @@ const game = {
       return false;
     }
     //3- are the letters used valid choices i.e. present in scramble?
-    const scrambleCopy = [...this.scramble];
+    this.scrambleCopy = [...this.scramble];
     for (let i = 0; i < word.length; i += 1) {
-      if (!(scrambleCopy.includes(word[i]))) {
+      if (!(this.scrambleCopy.includes(word[i]))) {
         console.log(`invalid letter choice: ${word[i]}`);
         return false;
       } 
-      scrambleCopy.splice(scrambleCopy.indexOf(word[i]), 1);
-      console.log(`valid letter, letters left: ${scrambleCopy}`);
+      this.scrambleCopy.splice(this.scrambleCopy.indexOf(word[i]), 1);
+      console.log(`valid letter, letters left: ${this.scrambleCopy}`);
     }
     //4- is it a word / is it in the directory?
     if (!(directory.includes(word))) {
@@ -164,7 +204,23 @@ const game = {
     this.wordsUsed.push(word);
     this.appendWord(word);
     this.roundScore += 1;
+    roundScore.innerText = `Round Score: ${this.roundScore}`;
     console.log(`success! words used: ${this.wordsUsed}, round score: ${this.roundScore}`);
+  },
+
+  nextRound() {
+    this.round += 1;
+    this.totalScore += this.roundScore;
+    this.roundScore = 0;
+    this.wordsUsed = [];
+    this.scramble = this.makeScramble();
+    
+    round.innerText = `Round: ${this.round}`;
+    totalScore.innerText = `Total Score: ${this.totalScore}`;
+    roundScore.innerText = `Round Score: ${this.roundScore}`;
+    yourScramble.innerText = game.stringify(this.scramble);
+    this.scrambleDisplay = [...this.scramble];
+    this.setTimer();
   },
 }
 
