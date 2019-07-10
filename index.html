@@ -5,22 +5,43 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>How Many Words</title>
+
+  <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
   <div id="container">
+
     <h1>How Many Words?</h1>
 
-    <div id="wordlist">
-      <h2>Words this round</h2>
-      <ul>
-        <li>successful words go here</li>
-      </ul>
+    <div id="scores">
+      <span id="round-score">Round Score: </span>
+      <span id="total-score">Total Score: </span>
+    </div>
+
+    <button id="begin-btn">Begin</button>
+
+    <div id="timer-div">
+      <h3>
+        Timer: <span id="time-left"></span>
+      </h3>
+    </div>
+
+    <div id="scramble-div">
+      <h3>Your Scramble:</h3>
+      <p id="scramble"></p>
     </div>
 
     <form>
+      <h3>Type word guesses here:</h3>
       <input type="text" id="word-input">
       <input type="submit" id="submit-btn">
     </form>
+
+    <div id="wordlist">
+      <h3>Words this round:</h3>
+      <ul>
+      </ul>
+    </div>
 
   </div>
 

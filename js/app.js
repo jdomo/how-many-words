@@ -1,25 +1,174 @@
-// console.log(directory.length); //157068 words between 3-9 characters
+//ELEMENT SELECTION (GLOBAL)
 
-//GAME OBJECT
+const beginBtn = document.querySelector('#begin-btn');  
+const submitBtn = document.querySelector('#submit-btn'); 
+const wordInput = document.querySelector('#word-input'); 
+const roundScore = document.querySelector('#round-score');
+const totalScore = document.querySelector('#total-score');
+const yourScramble = document.querySelector('#scramble');
+const timeLeft = document.querySelector('#time-left');
 
-const game = {
-  time: 120
-}
+//EVENT LISTENERS (GLOBAL)
 
-//------------------------------
-
-//GLOBAL VARIABLES
-
-const submitBtn = document.querySelector('#submit-btn'); //global
-const wordInput = document.querySelector('#word-input'); //global
+beginBtn.addEventListener('click', () => {
+  if (game.time === 120) {
+    game.setTimer();
+    game.makeScramble();
+    yourScramble.innerText = game.scramble;
+  }
+})
 
 submitBtn.addEventListener('click', (e) => {
   e.preventDefault();
-  wordGuess = wordInput.value;
+  game.wordGuess = wordInput.value;
   wordInput.value = '';
-  console.log(`word guessed is ${wordGuess}`);
-  checkWordGuess(wordGuess);
+  console.log(`word guessed is ${game.wordGuess}`);
+  game.checkWordGuess(game.wordGuess);
 });
+
+//GAME OBJECT
+const game = {
+  time: 120,
+  roundScore: 0,
+  totalScore: 0,
+
+  alphabet: {
+    vowels: ['a','e', 'i', 'o', 'u'],
+    regCons: ['b', 'c', 'd', 'f', 'g', 'h', 'k', 'l', 'm', 'n', 'p', 'r', 's', 't', 'v', 'w', 'y'],
+    hardCons: ['j', 'q', 'x', 'z'],
+  },
+  scramble: [],
+
+  wordGuess: null,
+  wordsUsed: [],
+
+  setTimer() {
+    const timer = setInterval(() => {
+      this.time -= 1;
+      timeLeft.innerText = this.time;
+      if (this.time === 0) {
+        clearInterval(timer);
+        this.time = 120;
+        this.round += 1;
+        this.totalScore += this.roundScore;
+        this.roundScore = 0;
+        this.scramble = [];
+      }
+    }, 1000)
+  },
+
+  //HELPER FUNCTIONS ----
+
+  scrambleThis(array) {
+    const tempScramble = [];
+    for (let i = 0; i < 9; i += 1) {
+      let randChar = this.randomLetter(array);
+      tempScramble.push(randChar);
+      array.splice(array.indexOf(randChar), 1);
+    }
+    return tempScramble;
+  },
+
+  randomLetter(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+  },
+
+  appendWord(word) {
+    const ul = document.querySelector('ul');
+    const li = document.createElement('li');
+    li.innerText = word;
+    ul.append(li);
+  },
+
+  //END OF HELPER FUNCTIONS ----
+
+  makeScramble() {
+    const randVowels = [];
+    const randCons = [];
+    let hardConIncluded = false;  
+    //get random vowels
+    for (let i = 0; i < 4; i += 1) {
+      randVowels.push(this.randomLetter(this.alphabet.vowels));
+      //include common digraphs if possible 'er', 'on', 'an'
+      if (randVowels.includes('e') && !randCons.includes('r')) randCons.push('r');
+      if ((randVowels.includes('o') || randVowels.includes('a')) && !randCons.includes('n')) randCons.push('n');
+    }
+    
+    //get length of randCons at this stage for static reference in next loop
+    const randConslength = randCons.length;
+
+    //fill remainder of randCons array
+    for (let i = 0; i < (5 - (randConslength)); i += 1) {
+      //variable to serve as probability for inclusion of certain letters
+      let letterChance = Math.random();
+
+      //2.5 percent chance of a difficult consonant (hardCons) (z,x,q,j) being included
+      if (letterChance < 0.025 && !hardConIncluded) {
+        randCons[1] = (randomLetter(this.alphabet.hardCons)); //inserted at second index so it doesn't get shifted or popped off
+        hardConIncluded = true;
+        //must include a 'u' if 'q' is included
+        if (randCons.includes('q')) {
+          randVowels.push('u');
+          randVowels.shift();
+        }
+      }
+
+      //20% chance of forced 'e' inclusion
+      if (!randVowels.includes('e') && letterChance < 0.2) {
+        randVowels.push('e');
+        randVowels.shift();
+      }
+
+      //if no hard consonant included, push a regular consonant
+      
+      //if 't' present, 50% chance of including an 'h' ('th' - common digraph)
+      if (randCons.includes('t') && !randCons.includes('h') && letterChance < 0.5) {
+        randCons.push('h');
+        randCons.shift();
+      }
+      randCons.push(this.randomLetter(this.alphabet.regCons));
+    }
+
+    //concatenate random vowel and consonant arrays
+    const randVowelsAndCons = randVowels.concat(randCons);
+    //randomize combo array and save to global scramble array
+    this.scramble = this.scrambleThis(randVowelsAndCons);
+  },
+
+  checkWordGuess(word) {
+    //1- is WORD.length >= 3?
+    if (word.length < 3 || word.length > 9) {
+      console.log('invalid word length');
+      return false;
+    }
+    //2- is WORD already in 'words used'?
+    if (this.wordsUsed.includes(word)) {
+      console.log('word already used');
+      return false;
+    }
+    //3- are the letters used valid choices i.e. present in scramble?
+    const scrambleCopy = [...this.scramble];
+    for (let i = 0; i < word.length; i += 1) {
+      if (!(scrambleCopy.includes(word[i]))) {
+        console.log(`invalid letter choice: ${word[i]}`);
+        return false;
+      } 
+      scrambleCopy.splice(scrambleCopy.indexOf(word[i]), 1);
+      console.log(`valid letter, letters left: ${scrambleCopy}`);
+    }
+    //4- is it a word / is it in the directory?
+    if (!(directory.includes(word))) {
+      console.log('word is not in dictionary');
+      return false;
+    }
+    this.wordsUsed.push(word);
+    this.appendWord(word);
+    this.roundScore += 1;
+    console.log(`success! words used: ${this.wordsUsed}, round score: ${this.roundScore}`);
+  },
+}
+
+//------------------------------
 
 //GAME ELEMENTS - v1
 //1) string of random letters (9) (SCRAMBLE)
@@ -28,15 +177,15 @@ submitBtn.addEventListener('click', (e) => {
           //consonants: bcdfghlmnprstvwy / jqxzk (21)
           //vowels: aeiou (5)
 
-      const alphabet = {
-        vowels: ['a','e', 'i', 'o', 'u'],
-        //'n' not included in regCons - will be included automatically with presence of 'o' or 'a'
-        regCons: ['b', 'c', 'd', 'f', 'g', 'h', 'k', 'l', 'm', 'n', 'p', 'r', 's', 't', 'v', 'w', 'y'],
-        hardCons: ['j', 'q', 'x', 'z'],
-      }
+      // const alphabet = {
+      //   vowels: ['a','e', 'i', 'o', 'u'],
+      //   //'n' not included in regCons - will be included automatically with presence of 'o' or 'a'
+      //   regCons: ['b', 'c', 'd', 'f', 'g', 'h', 'k', 'l', 'm', 'n', 'p', 'r', 's', 't', 'v', 'w', 'y'],
+      //   hardCons: ['j', 'q', 'x', 'z'],
+      // }
 
       
-      let scramble = [];
+      // let scramble = [];
       
       //CRAZY SCRAMBLE-MAKING FUNCTION
 
@@ -53,91 +202,8 @@ submitBtn.addEventListener('click', (e) => {
             //if 'q' gets included, must also include 'u' (very few english words with only a 'q')
 
           //if no 'e' in random vowels array, 20% chance of forced inclusion (approx. 70% of english words contain an 'e' -- chance adjusted to reflect this)
-      
-      function makeScramble() {
-        const randVowels = [];
-        const randCons = [];
-        let hardConIncluded = false;  
-        //get random vowels
-        for (let i = 0; i < 4; i += 1) {
-          randVowels.push(randomLetter(alphabet.vowels));
-          //include common digraphs if possible 'er', 'on', 'an'
-          if (randVowels.includes('e') && !randCons.includes('r')) randCons.push('r');
-          if ((randVowels.includes('o') || randVowels.includes('a')) && !randCons.includes('n')) randCons.push('n');
-        }
-        
-        //get length of randCons at this stage for static reference in next loop
-        const randConslength = randCons.length;
-        console.log(`${randCons}, randConsLength is ${randConslength}`);
-
-        //fill remainder of randCons array
-        for (let i = 0; i < (5 - (randConslength)); i += 1) {
-          //variable to serve as probability for inclusion of certain letters
-          let letterChance = Math.random();
-
-          //2.5 percent chance of a difficult consonant (hardCons) (z,x,q,j) being included
-          if (letterChance < 0.025 && !hardConIncluded) {
-            randCons[1] = (randomLetter(alphabet.hardCons)); //inserted at second index so it doesn't get shifted or popped off
-            console.log('hardCon included');
-            hardConIncluded = true;
-            //must include a 'u' if 'q' is included
-            if (randCons.includes('q')) {
-              randVowels.push('u');
-              randVowels.shift();
-            }
-          }
-
-          //20% chance of forced 'e' inclusion
-          if (!randVowels.includes('e') && letterChance < 0.2) {
-            randVowels.push('e');
-            randVowels.shift();
-            console.log(`forced an e in there`);
-          }
-
-          //if no hard consonant included, push a regular consonant
-          
-          //if 't' present, 50% chance of including an 'h' ('th' - common digraph)
-          if (randCons.includes('t') && !randCons.includes('h') && letterChance < 0.5) {
-            randCons.push('h');
-            randCons.shift();
-          }
-          randCons.push(randomLetter(alphabet.regCons));
-          console.log(`${randCons}, randCons length is ${randCons.length}`)
-          console.log(`${i}<--- i`)
-        }
-
-        console.log(`${randVowels} <--- randVowels`);
-        console.log(`${randCons} <--- randCons`);        
-        //concatenate random vowel and consonant arrays
-        const randVowelsAndCons = randVowels.concat(randCons);
-        //randomize combo array and save to global scramble array
-        scramble = scrambleThis(randVowelsAndCons);
-        console.log(scramble);
-      }
-            //consonant array conditions
-              //don't include more than one j,q,x,z,k?
-
-            //concatenate the two arrays which makes our SCRAMBLE array
         
       //1b) rearrange button - use scramble function
-
-          //scramble function
-          function scrambleThis(array) {
-            const tempScramble = [];
-            for (let i = 0; i < 9; i += 1) {
-              let randChar = randomLetter(array);
-              tempScramble.push(randChar);
-              array.splice(array.indexOf(randChar), 1);
-            }
-            return tempScramble;
-          }
-
-          //random letter function
-          function randomLetter(arr) {
-            return arr[Math.floor(Math.random() * arr.length)];
-          }
-
-
               
 //2) unordered list of words used in current round
     //create/append empty ul with id 'used-words'
@@ -147,67 +213,11 @@ submitBtn.addEventListener('click', (e) => {
     //this.timer = 120; (2 minutes)
     //setInterval to decrement timer every 1000ms
     //when clock finished, reset round
-    const timer = setInterval(() => {
-      
-    }, 1000)
 
 //4) user input box or form for word guesses
 
       //on submit, grab input and check four conditions
           //const WORD = inputEl.value
-
-      const wordsUsed = []; //player
-      let roundScore = 0;   //player
-      // const submitBtn = document.querySelector('#submit-btn'); //global
-      // const wordInput = document.querySelector('#word-input'); //global
-      let wordGuess; //player or game
-
-      // submitBtn.addEventListener('click', (e) => {
-      //   e.preventDefault();
-      //   wordGuess = wordInput.value;
-      //   wordInput.value = '';
-      //   console.log(`word guessed is ${wordGuess}`);
-      //   checkWordGuess(wordGuess);
-      // });
-
-      function checkWordGuess(word) {
-        //1- is WORD.length >= 3?
-        if (word.length < 3 || word.length > 9) {
-          console.log('invalid word length');
-          return false;
-        }
-        //2- is WORD already in 'words used'?
-        if (wordsUsed.includes(word)) {
-          console.log('word already used');
-          return false;
-        }
-        //3- are the letters used valid choices i.e. present in scramble?
-        const scrambleCopy = [...scramble];
-        for (let i = 0; i < word.length; i += 1) {
-          if (!(scrambleCopy.includes(word[i]))) {
-            console.log(`invalid letter choice: ${word[i]}`);
-            return false;
-          } 
-          scrambleCopy.splice(scrambleCopy.indexOf(word[i]), 1);
-          console.log(`valid letter, letters left: ${scrambleCopy}`);
-        }
-        //4- is it a word / is it in the directory?
-        if (!(directory.includes(word))) {
-          console.log('word is not in dictionary');
-          return false;
-        }
-        wordsUsed.push(word);
-        appendWord(word);
-        roundScore += 1;
-        console.log(`success! words used: ${wordsUsed}, round score: ${roundScore}`);
-      }
-
-      function appendWord(word) {
-        const ul = document.querySelector('ul');
-        const li = document.createElement('li');
-        li.innerText = word;
-        ul.append(li);
-      }
 
           //2 if true, show 'word already used' in 'invis div'
           //if false, proceed to next condition
