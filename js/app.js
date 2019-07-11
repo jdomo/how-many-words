@@ -125,13 +125,16 @@ const game = {
     setTimeout(() => el.classList.add(desiredClass), timeOut);
   },
 
-  displayMsg(text) {
-    if (text === 'nice!') {
-      this.tradeClass(msgPara, "red", '', "green");
-      this.tradeClass(msgPara, "green", 1500, "red");
+  displayMsg(el, text) {
+    if (el.classList.contains("green") && text !== 'nice!') {
+      this.tradeClass(el, "green", '', "red");
     }
-    msgPara.innerText = text;
-    this.tradeClass(msgPara, "no-opacity", 1200);
+    if (text === 'nice!') {
+      this.tradeClass(el, "red", '', "green");
+      // this.tradeClass(msgPara, "green", 900, "red");
+    }
+    el.innerText = text;
+    this.tradeClass(el, "no-opacity", 700);
   },
 
   //MAIN GAME FUNCTIONS
@@ -210,26 +213,26 @@ const game = {
   checkWordGuess(word) {
     //1- is WORD.length >= 3?
     if (word.length < 3 || word.length > 9) {
-      if (word.length < 3) this.displayMsg('use at least 3 characters');
+      if (word.length < 3) this.displayMsg(msgPara, 'use at least 3 characters');
       return false;
     }
     //2- is WORD already in 'words used'?
     if (this.wordsUsed.includes(word)) {
-      this.displayMsg('word already used');
+      this.displayMsg(msgPara, 'word already used');
       return false;
     }
     //3- are the letters used valid choices i.e. present in scramble?
     this.scrambleCopy = [...this.scramble];
     for (let i = 0; i < word.length; i += 1) {
       if (!(this.scrambleCopy.includes(word[i]))) {
-        this.displayMsg(`invalid letter choice(s)`);
+        this.displayMsg(msgPara, `invalid letter choice(s)`);
         return false;
       } 
       this.scrambleCopy.splice(this.scrambleCopy.indexOf(word[i]), 1);
     }
     //4- is it a word / is it in the directory?
     if (!(directory.includes(word))) {
-      this.displayMsg('word is not in dictionary');
+      this.displayMsg(msgPara, 'word is not in dictionary');
       return false;
     }
     this.wordsUsed.push(word);
@@ -237,7 +240,7 @@ const game = {
     this.roundScore += 1;
     roundScore.innerText = `Round Score: ${this.roundScore}`;
     currWordCount.innerText = this.roundScore;
-    this.displayMsg('nice!');
+    this.displayMsg(msgPara, 'nice!');
   },
 
   checkHiRoundScore() {
