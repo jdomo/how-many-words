@@ -69,6 +69,7 @@ const game = {
   roundScore: 0,
   totalScore: 0,
   hiRoundScore: 0,
+  threeLetterTotal: 0,
   
   scramble: [],
   scrambleCopy: [],
@@ -235,12 +236,27 @@ const game = {
       this.displayMsg(msgPara, 'word is not in dictionary');
       return false;
     }
+    //5- is the user spamming three letter combinations?
+    if (word.length === 3) {
+      if (!this.checkThreeLetterTotal()) {
+        this.displayMsg(msgPara, 'use at least 4 characters');
+        return false;
+      }
+    }
     this.wordsUsed.push(word);
     this.appendWord(word);
     this.roundScore += 1;
     roundScore.innerText = `Round Score: ${this.roundScore}`;
     currWordCount.innerText = this.roundScore;
     this.displayMsg(msgPara, 'nice!');
+  },
+
+  checkThreeLetterTotal() {
+    this.threeLetterTotal += 1;
+    if (this.threeLetterTotal > 8) {
+      return false;
+    }
+    return true;
   },
 
   checkHiRoundScore() {
@@ -254,6 +270,7 @@ const game = {
     this.round += 1;
     this.totalScore += this.roundScore;
     this.roundScore = 0;
+    this.threeLetterTotal = 0;
     this.wordsUsed = [];
     this.scramble = this.makeScramble();
     
