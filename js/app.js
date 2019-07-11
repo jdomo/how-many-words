@@ -20,6 +20,7 @@ beginBtn.addEventListener('click', () => {
   if (game.time === 120) {
     game.nextRound();
     beginBtn.classList.add('hide');
+    timeLeft.classList.remove('hide');
   }
 })
 
