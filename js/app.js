@@ -142,6 +142,7 @@ const game = {
   setTimer() {
     this.time = 120;
     timeLeft.style.color = "#14ad1c";
+    timeLeft.classList.remove('hide');
     const timer = setInterval(() => {
       if (this.time <= 30) timeLeft.style.color = "#FF0000";
       this.time -= 1;
@@ -149,6 +150,7 @@ const game = {
       if (this.time === 0) {
         clearInterval(timer);
         this.checkHiRoundScore();
+        timeLeft.classList.add('hide');
         submitBtn.classList.add('invisible');
         wordInput.classList.add('invisible');
         nextRoundBtn.classList.remove('hide');

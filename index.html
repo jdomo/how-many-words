@@ -7,52 +7,69 @@
   <title>How Many Words</title>
 
   <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
-  <link href="https://fonts.googleapis.com/css?family=Domine|Roboto:400,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Oleo+Script|Roboto:400,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
-  <div id="container">
-    <header class="center">
-      <h1>How Many Words?</h1>
-    </header>
-    <div class="center" id="game-info">
-      <span id="round">Round: </span>
-      <span id="round-score">Round Score: </span>
-      <span id="total-score">Total Score: </span>
-      <span id="hi-round-score">Most Words: </span>
-    </div>
-
-    <div class="center" id="versa-div">
-      <button class="pure-button pure-button-primary" id="begin-btn">Begin</button>
-      <button class="hide pure-button pure-button-primary" id="nextround-btn">Next Round</button>
-    </div>
-
-    <div class="center" id="timer-div">
-      <span id="time-left"></span>
-    </div>
-
-    <div class="center" id="scramble-div">
-      <p id="scramble"></p>
-      <button class="pure-button button-secondary" id="rearrange-btn">Re-Arrange!</button>
-    </div>
-
-    <div class="center" id="msg-div">
-      <p class="no-opacity red" id="msg"></p>
-    </div>
-
-    <div class="center" id="form-div">
-      <form class="center">
-        <input type="text" id="word-input" autocomplete="off">
-        <input type="submit" value="Guess" class="pure-button" id="submit-btn">
-      </form>
-    </div>
-
-    <div id="wordlist">
-      <h3>Words this round: <span id="curr-word-count"></span></h3>
-      <ul id="words-used">
-      </ul>
-    </div>
-
+  <div class="container">
+    <div class="row">
+      <div class="column side">
+        <div class="row">
+          <div id="wordlist">
+            <h3>Words this round: <span id="curr-word-count"></span></h3>
+            <ul id="words-used">
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="column middle">
+        <div class="row">
+          <header>
+            <h1>How Many Words?</h1>
+          </header>
+        </div>
+        <div class="row" id="game-info">
+          <div id="game-info">
+            <span id="round">Round: </span>
+            <span id="round-score">Round Score: </span>
+            <span id="total-score">Total Score: </span>
+            <span id="hi-round-score">Most Words: </span>
+          </div>
+        </div>
+        <div class="row">
+          <div id="versa-div">
+            <button class="pure-button pure-button-primary" id="begin-btn">Begin</button>
+            <button class="hide pure-button pure-button-primary" id="nextround-btn">Next Round</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="position-text" id="timer-div">
+            <span id="time-left"></span>
+          </div>
+        </div>
+        <div class="row">
+          <div id="scramble-div">
+            <p class="position-text" id="scramble"></p>
+            <button class="pure-button button-secondary position-text" id="rearrange-btn">Re-Arrange!</button>
+          </div>
+        </div>
+        <div class="row">
+          <div id="msg-div">
+            <p class="no-opacity red" id="msg"></p>
+          </div>
+        </div>
+        <div class="row">
+          <div id="form-div">
+            <form>
+              <input type="text" id="word-input" autocomplete="off">
+              <input type="submit" value="Guess" class="pure-button" id="submit-btn">
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="column side">
+      </div>
+    </div>    
   </div>
 
   <script src="js/words.js"></script>

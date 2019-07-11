@@ -1,21 +1,26 @@
-/* {
-  transition: all 0.5s, linear;
-  /* -webkit-transition: all 1s ease;
-  -moz-transition:    all 1s ease;
-  -ms-transition:     all 1s ease;
-  -o-transition:      all 1s ease; 
-} */
+html {
+  height: 100%;
+}
 
 body {
   font-family: "Roboto", sans-serif;
+  /* background: #daf9ff; */
+  background: linear-gradient(to bottom, rgba(253, 173, 107, 0.486) 0%,hsla(345, 55%, 67%, 0.486) 100%);
+  color: #000000;
+  height: 100%;
 }
 
 h1 {
-  font-family: "Domine", serif;
+  font-family: 'Oleo Script', Helvetica, sans-serif;
+  font-size: 45px;
+  letter-spacing: 0.15rem;
+  color: #2b2b2b;
+  text-shadow: 4px 4px 0px rgba(0,0,0,0.1);
 }
 
 p {
   font-size: 30px;
+  font-weight: 700;
   padding: 0;
 }
 
@@ -33,13 +38,49 @@ span {
   text-align: center;
 }
 
-.pure-button {
-  border-radius: 5px;
+.row {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  width: 100%;
+  align-content: center;
+  justify-content: center;
 }
 
-.center {
-  text-align: center;
+.column {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+  border-radius: 20px;
 }
+
+.side {
+  font-size: 15px;
+  background: linear-gradient(to bottom, #fafafade 0%,#d97b9300 100%);
+  flex: 1;
+  margin: 0.2rem;
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: 20%;
+}
+.middle {
+  background: linear-gradient(to bottom, #fafafade 0%,#d97b9300 100%);
+  margin: 0.2rem;
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: 60%;
+  height: 85%;
+}
+
+.pure-button {
+  border-radius: 5px;
+  border: 0.5px dotted;
+}
+
+/* .center {
+  text-align: center;
+} */
 
 .hide {
   display: none;
@@ -62,9 +103,24 @@ span {
   color: #ED4C4C;
 }
 
-#container {
-  width: 80%;
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 90%;
+  width: 90%;
   margin: auto;
+}
+
+.position-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#curr-word-count {
+  display: block;
+  padding: 0.25rem;
+  font-size: 2rem;
 }
 
 #timer-div {
@@ -77,19 +133,20 @@ span {
 }
 
 #scramble {
-  display: inline-block;
+  display: block;
   margin-bottom: 15px;
 }
 
-/* #scramble-div {
-} */
+#scramble-div {
+  min-height: 116px;
+}
 
 #time-left {
   display: inline-block;
   width: 150px;
   font-size: 50px;
   font-weight: 700;
-  color: #14ad1c;
+  color: #7cff82;
   text-align: center;
   padding: 10px 5px;
   margin-bottom: 15px;
@@ -98,6 +155,7 @@ span {
 #versa-div {
   display: block;
   height: 35px;
+  max-height: 35px;
 }
 
 #msg-div {
