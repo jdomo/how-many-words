@@ -2,6 +2,10 @@
 
 **How Many Words** can you make out of 9 random letters? Set your high score, then step your game up and try to top it. You've got 120 seconds.
 
+## Play
+
+<https://pages.git.generalassemb.ly/jdomo/how-many-words/>
+
 ## Getting Started
 
 All you need is a web browser, a keyboard and your smarty pants. Be on the lookout for mobile compatibility in v2.
@@ -20,13 +24,11 @@ All you need is a web browser, a keyboard and your smarty pants. Be on the looko
 
 - You may use each letter in the scramble only once per word.
 
-- You may not use letters that aren't present in the scramble.
-
 - Word guesses must be at least 3 letters, and no more than 9 (duh).
 
 - You can't use the same word twice during the same round - keep an eye on your 'Words Used' list if you're unsure.
 
-- **After 8 successful three-letter words,** your word guesses must consist of at least 4 letters for the remainder of the round.
+- **After 8 successful three-letter words,** your word guesses must consist of at least 4 letters.
 
 ## How to Play
 
@@ -52,7 +54,3 @@ Joseph Domovitch (2019)
 ![HMW Screenshot 1](https://i.ibb.co/VVffYtg/Screen-Shot-2019-07-11-at-4-59-43-PM.png)
 
 ![HMW Screenshot 2](https://i.ibb.co/zXvZWZw/Screen-Shot-2019-07-11-at-5-03-59-PM.png)
-
-
-
-
