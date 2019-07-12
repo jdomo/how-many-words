@@ -2,13 +2,22 @@
 
 **How Many Words** can you make out of 9 random letters? Set your high score, then step your game up and try to top it. You've got 120 seconds.
 
+## Wireframe Sketch
+
+![HMW Wireframe](https://i.ibb.co/6Y5ZLT5/Screen-Shot-2019-07-12-at-9-50-40-AM.png)
+
+## Screenshots
+![HMW Screenshot 1](https://i.ibb.co/VVffYtg/Screen-Shot-2019-07-11-at-4-59-43-PM.png)
+
+![HMW Screenshot 2](https://i.ibb.co/zXvZWZw/Screen-Shot-2019-07-11-at-5-03-59-PM.png)
+
 ## Play
 
 <https://pages.git.generalassemb.ly/jdomo/how-many-words/>
 
 ## Getting Started
 
-All you need is a web browser, a keyboard and your smarty pants. Be on the lookout for mobile compatibility in v2.
+All you need is a web browser, a keyboard and your smarty pants.
 
 ## Built With
 
@@ -46,19 +55,22 @@ All you need is a web browser, a keyboard and your smarty pants. Be on the looko
 
 - Here's a tip for easy extra points - If you're lucky enough to get an 's' in your scramble, plurals do count as separate words, e.g. 'law' and 'laws'.
 
-## Author
+## Next Steps
 
-Joseph Domovitch (2019)
-
-## Screenshots
-![HMW Screenshot 1](https://i.ibb.co/VVffYtg/Screen-Shot-2019-07-11-at-4-59-43-PM.png)
-
-![HMW Screenshot 2](https://i.ibb.co/zXvZWZw/Screen-Shot-2019-07-11-at-5-03-59-PM.png)
-
-## Features to Add for Future Versions
+- Convert time left to minutes/seconds
 
 - Multiplayer capabilities
 
-- Extra points for longer words and harder letters (X, Q, Z, J)
+- Difficulty increases with round count
+
+- Extra points for longer words and harder letters
 
 - Mobile version
+
+- Link to dictionary definitions
+
+- Integrate algorithm/counter for all possible words in scramble
+
+## Author
+
+Joseph Domovitch (2019)
