@@ -54,3 +54,11 @@ Joseph Domovitch (2019)
 ![HMW Screenshot 1](https://i.ibb.co/VVffYtg/Screen-Shot-2019-07-11-at-4-59-43-PM.png)
 
 ![HMW Screenshot 2](https://i.ibb.co/zXvZWZw/Screen-Shot-2019-07-11-at-5-03-59-PM.png)
+
+## Features to Add for Future Versions
+
+- Multiplayer capabilities
+
+- Extra points for longer words and harder letters (X, Q, Z, J)
+
+- Mobile version
