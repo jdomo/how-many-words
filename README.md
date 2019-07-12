@@ -62,9 +62,3 @@ Joseph Domovitch (2019)
 - Extra points for longer words and harder letters (X, Q, Z, J)
 
 - Mobile version
-
-- Link words used to dictionary definitions
-
-- Display number indicating all possible words from scramble
-
-- 'buy a letter'
