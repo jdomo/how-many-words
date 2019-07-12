@@ -20,6 +20,8 @@ All you need is a web browser, a keyboard and your smarty pants. Be on the looko
 
 - You may use each letter in the scramble only once per word.
 
+- You may not use letters that aren't present in the scramble.
+
 - Word guesses must be at least 3 letters, and no more than 9 (duh).
 
 - You can't use the same word twice during the same round - keep an eye on your 'Words Used' list if you're unsure.
