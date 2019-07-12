@@ -2,10 +2,6 @@
 
 **How Many Words** can you make out of 9 random letters? Set your high score, then step your game up and try to top it. You've got 120 seconds.
 
-## Wireframe Sketch
-
-![HMW Wireframe](https://i.ibb.co/6Y5ZLT5/Screen-Shot-2019-07-12-at-9-50-40-AM.png)
-
 ## Screenshots
 ![HMW Screenshot 1](https://i.ibb.co/VVffYtg/Screen-Shot-2019-07-11-at-4-59-43-PM.png)
 
@@ -70,6 +66,10 @@ All you need is a web browser, a keyboard and your smarty pants.
 - Link to dictionary definitions
 
 - Integrate algorithm/counter for all possible words in scramble
+
+## Wireframe Sketch
+
+![HMW Wireframe](https://i.ibb.co/6Y5ZLT5/Screen-Shot-2019-07-12-at-9-50-40-AM.png)
 
 ## Author
 
