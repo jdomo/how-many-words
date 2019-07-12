@@ -51,6 +51,6 @@ All you need is a web browser, a keyboard and your smarty pants. Be on the looko
 Joseph Domovitch (2019)
 
 ## Screenshots
-![HMW Screenshot 1](https://i.ibb.co/DL259z2/Screen-Shot-2019-07-12-at-9-26-26-AM.png)
+![HMW Screenshot 1](https://i.ibb.co/VVffYtg/Screen-Shot-2019-07-11-at-4-59-43-PM.png)
 
-![HMW Screenshot 2](https://i.ibb.co/f2BRP8B/Screen-Shot-2019-07-12-at-9-29-07-AM.png)
+![HMW Screenshot 2](https://i.ibb.co/zXvZWZw/Screen-Shot-2019-07-11-at-5-03-59-PM.png)
