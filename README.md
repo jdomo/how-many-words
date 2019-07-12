@@ -26,7 +26,7 @@ All you need is a web browser, a keyboard and your smarty pants. Be on the looko
 
 - You can't use the same word twice during the same round - keep an eye on your 'Words Used' list if you're unsure.
 
-- **After 8 successful three-letter words,** your word guesses must consist of at least 4 letters.
+- **After 8 successful three-letter words,** your word guesses must consist of at least 4 letters for the remainder of the round.
 
 ## How to Play
 
